@@ -44,6 +44,8 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // bu metodda sıralama önemlidir.
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -54,7 +56,10 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            
+            // cors buraya eklenir. routing ve auth arasına
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            // Yukarıdaki useCors ile policyler geçebilir. localhost:4200'e anyhaeder, anymethod şeklinde izin verdik.
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
