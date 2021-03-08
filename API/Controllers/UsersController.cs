@@ -7,9 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController] // Api endpoint olduğu belirtilir.
-    [Route("api/[controller]")] // controller burada users demektir. UsersController, Controller çıkarılarak placeholder oluşurur gibi. api/users default endpoint oldu.
-    public class UsersController : ControllerBase
+   
+    public class UsersController : BaseApiController
     {
         // constructor oluşurulur, buradaki context
         private readonly DataContext _context;

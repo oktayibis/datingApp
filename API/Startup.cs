@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.Interfaces;
+using API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +32,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            // Token servislerini ekledi. addScope, uygulama çalıştığı sürece geçilen servisleri yaşatır. Token servisi'de, uygulama yaşadğı sürece çalışmalıdır.
+            services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection")); // Connecting application to database
