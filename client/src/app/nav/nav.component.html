@@ -1,0 +1,25 @@
+<header style="background-color: #bcc6bd" class="d-flex align-items-center bg-body border-bottom shadow-sm">
+<div class="container d-flex align-items-center justify-content-between p-2 px-md-4 mb-3">
+  <p class="h5 my-0 me-md-auto fw-normal">Dating App</p>
+  <nav *ngIf="loggedIn" class="my-2 my-md-0 me-md-3">
+    <a class="p-2 text-dark" href="#">Matches</a>
+    <a class="p-2 text-dark" href="#">Lists</a>
+    <a class="p-2 text-dark" href="#">Messages</a>
+  </nav>
+  <form *ngIf="!loggedIn" #loginForm="ngForm" (ngSubmit)="login()" class="form-check-inline" autocomplete="off">
+    <input [(ngModel)]="model.username" name="username" type="text" class="form-control mr-sm-2" placeholder="Username">
+    <input [(ngModel)]="model.password" name="password" type="password" class="form-control mr-sm-2" placeholder="password">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+  </form>
+  <div *ngIf="loggedIn" dropdown class="dropdown">
+    <a class="dropdown-toggle" dropdownToggle>Welcome user</a>
+    <div class="dropdown-menu mt-3" *dropdownMenu>
+      <a class="dropdown-item">Edit Profile</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="logOut()">Logout</a>
+    </div>
+  </div>
+</div>
+
+
+</header>
