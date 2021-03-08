@@ -79,7 +79,7 @@ namespace API.Controllers
 
         }
     
-        // Aynı username den var mı? uniqe
+        // Aynı username den var mı?
         private async Task<bool> UserExisits(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());

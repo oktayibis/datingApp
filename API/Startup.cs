@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using API.Data;
+using API.Extensions;
 using API.Interfaces;
 using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -33,12 +37,17 @@ namespace API
         {
 
             // Token servislerini ekledi. addScope, uygulama çalıştığı sürece geçilen servisleri yaşatır. Token servisi'de, uygulama yaşadğı sürece çalışmalıdır.
-            services.AddScoped<ITokenService, TokenService>();
+            /*services.AddScoped<ITokenService, TokenService>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection")); // Connecting application to database
-            });
+            });*/
+            services.AddApplicationServices(_config);
             services.AddControllers();
+            services.AddCors();
+            // Microsoft.AspnetCore.Authentication.JwtBearer servisinden sonra eklenecekler. IdentityExtensions yazılmaıdır.
+            services.AddIdentityServices(_config);
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -64,6 +73,8 @@ namespace API
             // cors buraya eklenir. routing ve auth arasına
             app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
             // Yukarıdaki useCors ile policyler geçebilir. localhost:4200'e anyhaeder, anymethod şeklinde izin verdik.
+
+            app.UseAuthentication(); // Yeri cors sonrası Authorization öncesinde olmalıdır.
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
